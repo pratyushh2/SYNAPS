@@ -1,0 +1,28 @@
+# ============================================================
+# SYNAPS — .vercelignore
+# Excludes training data, experiments, and large assets that
+# are NOT required for Vercel production inference.
+# This reduces the Vercel bundle from ~5.5 GB to under 500 MB.
+# ============================================================
+
+# Training dataset (3 340 IQ files + 3 342 WAV files ≈ 466 MB)
+data/
+
+# Training notebooks and experiment runs
+experiments/
+
+# Training result logs (text + JSON)
+result/
+
+# Utility / dataset generation scripts (not needed at runtime)
+scripts/
+
+# Frontend source (deployed separately)
+frontend/
+
+# Local dev files
+*.log
+*.tmp
+.env
+.env.*
+!.env.example
