@@ -2,6 +2,30 @@
 FastAPI application entry point for SYNAPS Signal Intelligence Backend.
 """
 
+import sys
+import types
+from pathlib import Path
+
+# Ensure project root and backend directory are in sys.path for both local execution and Vercel deployments
+_BACKEND_DIR = Path(__file__).resolve().parent
+_PROJECT_ROOT = _BACKEND_DIR.parent
+
+for _p in (_PROJECT_ROOT, _BACKEND_DIR):
+    _p_str = str(_p)
+    if _p_str not in sys.path:
+        sys.path.insert(0, _p_str)
+
+# Ensure 'backend' package is resolvable even when CWD or Vercel root is the backend directory
+if "backend" not in sys.modules:
+    try:
+        import importlib
+        importlib.import_module("backend")
+    except ModuleNotFoundError:
+        _backend_pkg = types.ModuleType("backend")
+        _backend_pkg.__path__ = [str(_BACKEND_DIR)]
+        _backend_pkg.__file__ = str(_BACKEND_DIR / "__init__.py")
+        sys.modules["backend"] = _backend_pkg
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
