@@ -33,3 +33,20 @@ explicit = true
 
 [tool.uv.sources]
 torch = [{ index = "pytorch-cpu" }]
+
+# ---------------------------------------------------------------------------
+# setuptools package discovery
+# Explicitly list packages so setuptools does NOT use flat-layout auto-
+# discovery (which errors when it finds multiple top-level packages).
+# py-modules includes main.py as a standalone module.
+# packages lists all sub-packages that make up the backend.
+# Nothing from data/, experiments/, result/, scripts/, or frontend/ is
+# included.
+# ---------------------------------------------------------------------------
+[tool.setuptools]
+py-modules = ["main"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["api*", "copilot*", "schemas*", "services*"]
+exclude = ["data*", "experiments*", "result*", "scripts*", "frontend*", "tests*"]
